@@ -5,6 +5,15 @@ TextureImporter:
   - first:
       213: 4886374235967796667
     second: Taco_Idle_0
+  - first:
+      213: 8092848530657255203
+    second: Taco_Idle_1
+  - first:
+      213: -3486232219974405629
+    second: Taco_Idle_2
+  - first:
+      213: -8638709657826678592
+    second: Taco_Idle_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -116,10 +125,10 @@ TextureImporter:
       name: Taco_Idle_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1024
-        height: 1024
+        x: 18
+        y: 386
+        width: 269
+        height: 240
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,6 +139,72 @@ TextureImporter:
       bones: []
       spriteID: bb53b7e7a73efc340800000000000000
       internalID: 4886374235967796667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Taco_Idle_1
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 386
+        width: 233
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32f1ed26cd29f4070800000000000000
+      internalID: 8092848530657255203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Taco_Idle_2
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 386
+        width: 230
+        height: 239
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30277eb444a6e9fc0800000000000000
+      internalID: -3486232219974405629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Taco_Idle_3
+      rect:
+        serializedVersion: 2
+        x: 764
+        y: 386
+        width: 245
+        height: 239
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c8218706532d1880800000000000000
+      internalID: -8638709657826678592
       vertices: []
       indices: 
       edges: []
@@ -149,6 +224,9 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Taco_Idle_0: 4886374235967796667
+      Taco_Idle_1: 8092848530657255203
+      Taco_Idle_2: -3486232219974405629
+      Taco_Idle_3: -8638709657826678592
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
