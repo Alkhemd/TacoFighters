@@ -6,17 +6,18 @@ namespace TacoFighter.Characters
     public class CharacterController2D : MonoBehaviour
     {
         [Header("Movement Settings")]
-        [SerializeField] private float moveSpeed = 5f;
-        [SerializeField] private float jumpForce = 12f;
+        [SerializeField] private float moveSpeed = 7f; // Un poco más rápido para lucha
+        [SerializeField] private float jumpForce = 14f;
         [SerializeField] private LayerMask groundLayer;
-        [SerializeField] private Transform groundCheck;
+        [SerializeField] private Transform groundCheck; // Punto en los pies
+        [SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.1f); // Área de detección
 
         [Header("State")]
-        [SerializeField] private bool isGrounded;
-        [SerializeField] private bool facingRight = true;
+        public bool isGrounded; // Público para que las animaciones lo lean
+        private bool facingRight = true;
 
         private Rigidbody2D rb;
-        private Vector2 inputVector;
+        private float horizontalInput; // Cambiado para recibir de UI o Teclado
         private bool jumpRequest;
 
         private void Awake()
@@ -26,9 +27,10 @@ namespace TacoFighter.Characters
 
         private void Update()
         {
-            // Input processing
-            float xInput = Input.GetAxisRaw("Horizontal");
-            inputVector = new Vector2(xInput, 0);
+            // --- INPUT ---
+            // Esto permite probar en PC, pero la variable horizontalInput 
+            // podrá ser seteada por tus botones móviles.
+            horizontalInput = Input.GetAxisRaw("Horizontal");
 
             if (Input.GetButtonDown("Jump") && isGrounded)
             {
@@ -36,8 +38,16 @@ namespace TacoFighter.Characters
             }
 
             // Flip character
-            if (xInput > 0 && !facingRight) Flip();
-            else if (xInput < 0 && facingRight) Flip();
+            if (horizontalInput > 0 && !facingRight) Flip();
+            else if (horizontalInput < 0 && facingRight) Flip();
+        }
+
+        // Función pública para que el botón de la UI móvil la llame
+        public void SetHorizontalInput(float value) => horizontalInput = value;
+        
+        public void RequestJump() 
+        {
+            if(isGrounded) jumpRequest = true;
         }
 
         private void FixedUpdate()
@@ -54,23 +64,23 @@ namespace TacoFighter.Characters
 
         private void Move()
         {
-            rb.linearVelocity = new Vector2(inputVector.x * moveSpeed, rb.linearVelocity.y);
+            // Usamos linearVelocity (Unity 2023+)
+            rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
         }
 
         private void Jump()
         {
+            // Resetear velocidad Y para saltos consistentes
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
 
         private void CheckGround()
         {
-            // Raycast downward from character position
-            Vector2 position = transform.position;
-            RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down, 1f, groundLayer);
-            isGrounded = hit.collider != null;
+            // Usamos OverlapBox en el punto groundCheck para mayor precisión
+            isGrounded = Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0f, groundLayer);
         }
-
+    
         private void Flip()
         {
             facingRight = !facingRight;
@@ -79,11 +89,12 @@ namespace TacoFighter.Characters
             transform.localScale = scaler;
         }
 
+        // Dibujar el área de detección en el editor
         private void OnDrawGizmos()
         {
+            if (groundCheck == null) return;
             Gizmos.color = isGrounded ? Color.green : Color.red;
-            Vector2 position = transform.position;
-            Gizmos.DrawLine(position, position + Vector2.down * 1f);
+            Gizmos.DrawWireCube(groundCheck.position, groundCheckSize);
         }
     }
 }
