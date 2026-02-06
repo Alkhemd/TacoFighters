@@ -21,7 +21,7 @@ namespace TacoFighter.Characters
 
         [Header("Sprite Flip")]
         [Tooltip("Voltear sprite automáticamente según dirección")]
-        [SerializeField] private bool autoFlip = true;
+        [SerializeField] private bool autoFlip = true; // verifica esto
 
         [Tooltip("¿El sprite mira a la derecha por defecto?")]
         [SerializeField] private bool facingRight = true;

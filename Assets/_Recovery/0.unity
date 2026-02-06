@@ -752,7 +752,7 @@ MonoBehaviour:
   - {fileID: -8638709657826678592, guid: e4116adeb372da1499267303267438db, type: 3}
   frameRate: 10
   loop: 0
-  playOnStart: 0
+  playOnStart: 1
   showDebugInfo: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

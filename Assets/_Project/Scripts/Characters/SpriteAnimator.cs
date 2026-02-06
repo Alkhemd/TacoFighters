@@ -19,7 +19,7 @@ namespace TacoFighter.Characters
         [SerializeField] private Sprite[] animationFrames;
 
         [Tooltip("Fotogramas por segundo (velocidad de la animación)")]
-        [SerializeField] private float frameRate = 10f; // 10 FPS por defecto
+        [SerializeField] private float frameRate = 20f; // 10 FPS por defecto !! VERFICIAR ESTO, ESTABA EN 10
 
         [Tooltip("Reproducir en loop continuo")]
         [SerializeField] private bool loop = true;
