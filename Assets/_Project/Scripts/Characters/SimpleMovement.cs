@@ -10,7 +10,7 @@ namespace TacoFighter.Characters
     /// - Lee input del teclado (A = izquierda, D = derecha)
     /// - Mueve el personaje usando Transform (sin física compleja)
     /// - Voltea el sprite automáticamente según la dirección de movimiento
-    /// - Se integra con SpriteAnimator para animaciones
+    /// - Se integra con SpriteAnimator y GhostTrail para efectos visuales
     /// </summary>
     [RequireComponent(typeof(SpriteRenderer))]
     public class SimpleMovement : MonoBehaviour
@@ -29,6 +29,9 @@ namespace TacoFighter.Characters
         [Header("Animation Integration")]
         [Tooltip("Referencia al SpriteAnimator (opcional)")]
         [SerializeField] private SpriteAnimator spriteAnimator;
+
+        [Tooltip("Referencia al efecto de estela (opcional)")]
+        [SerializeField] private GhostTrail ghostTrail;
 
         [Tooltip("Sprites para animación de caminar (opcional)")]
         [SerializeField] private Sprite[] walkFrames;
@@ -56,11 +59,9 @@ namespace TacoFighter.Characters
             // Obtener referencia al SpriteRenderer
             spriteRenderer = GetComponent<SpriteRenderer>();
 
-            // Obtener SpriteAnimator si no está asignado
-            if (spriteAnimator == null)
-            {
-                spriteAnimator = GetComponent<SpriteAnimator>();
-            }
+            // Obtener componentes si no están asignados
+            if (spriteAnimator == null) spriteAnimator = GetComponent<SpriteAnimator>();
+            if (ghostTrail == null) ghostTrail = GetComponent<GhostTrail>();
         }
 
         private void Update()
@@ -74,6 +75,12 @@ namespace TacoFighter.Characters
 
             // ===== 2. DETERMINAR SI SE ESTÁ MOVIENDO =====
             isMoving = Mathf.Abs(horizontalInput) > 0.01f;
+
+            // ACTIVAR EFECTO GHOST SI SE MUEVE
+            if (ghostTrail != null)
+            {
+                ghostTrail.makeGhost = isMoving;
+            }
 
             // ===== 3. MOVER EL PERSONAJE =====
             if (isMoving)
@@ -166,26 +173,30 @@ namespace TacoFighter.Characters
             // Si se está moviendo y hay animación de caminar
             if (isMoving && walkFrames != null && walkFrames.Length > 0)
             {
-                // Cambiar a animación de caminar
-                // (solo si no está ya reproduciéndola)
-                if (spriteAnimator.TotalFrames != walkFrames.Length)
+                // Cambiar a animación de caminar si no está ya activa
+                if (currentAnimState != AnimState.Walk)
                 {
                     spriteAnimator.SetAnimationFrames(walkFrames, true);
+                    currentAnimState = AnimState.Walk;
                     if (showDebugInfo) Debug.Log("[SimpleMovement] Animación: WALK");
                 }
             }
             // Si está quieto y hay animación idle
             else if (!isMoving && idleFrames != null && idleFrames.Length > 0)
             {
-                // Cambiar a animación idle
-                // (solo si no está ya reproduciéndola)
-                if (spriteAnimator.TotalFrames != idleFrames.Length)
+                // Cambiar a animación idle si no está ya activa
+                if (currentAnimState != AnimState.Idle)
                 {
                     spriteAnimator.SetAnimationFrames(idleFrames, true);
+                    currentAnimState = AnimState.Idle;
                     if (showDebugInfo) Debug.Log("[SimpleMovement] Animación: IDLE");
                 }
             }
         }
+
+        // Enum para rastrear el estado actual de la animación y evitar cambios innecesarios
+        private enum AnimState { None, Idle, Walk }
+        private AnimState currentAnimState = AnimState.None;
 
         /// <summary>
         /// Establece la velocidad de movimiento.
